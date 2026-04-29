@@ -1,36 +1,87 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# CourseHub - Nền tảng học trực tuyến
 
-## Getting Started
+> 🚀 Dự án React SPA được xây dựng với Vite, Tailwind CSS và Zustand
 
-First, run the development server:
+---
+
+## 📋 Giới thiệu
+
+**CourseHub** là nền tảng học trực tuyến (E-learning Platform) hiện đại, cho phép người dùng khám phá, mua và tham gia các khóa học chất lượng cao. Dự án được xây dựng dưới dạng Single Page Application (SPA) với giao diện người dùng mượt mà và trải nghiệm học tập tối ưu.
+
+---
+
+## 👥 Thành viên nhóm
+
+| Họ và tên | MSSV |
+|-----------|------|
+| Nguyễn Hoàng Thái Bình | 23720251 |
+
+---
+
+## 🛠️ Công nghệ sử dụng
+
+| Công nghệ | Mô tả |
+|-----------|-------|
+| ⚛️ **ReactJS** | Thư viện UI hiện đại |
+| ⚡ **Vite** | Công cụ build nhanh |
+| 🎨 **Tailwind CSS** | Framework CSS tiện lợi |
+| 📦 **Zustand** | Quản lý Global State |
+
+---
+
+## ✨ Tính năng nổi bật
+
+- 🔓 **Không cần Backend**: Dự án sử dụng Fake API thông qua `localStorage` để lưu trữ dữ liệu (không yêu cầu JWT/backend)
+- 🛒 **Giỏ hàng & Thanh toán**: Quy trình mua khóa học hoàn chỉnh với giỏ hàng, thanh toán và mã giảm giá
+- 📚 **Không gian học tập**: Workspace học tập với tính năng theo dõi tiến độ
+- 📱 **15 Màn hình Responsive**: Giao diện hoàn toàn tương thích với mọi thiết bị (desktop, tablet, mobile)
+
+---
+
+## 🚀 Hướng dẫn cài đặt
+
+### Yêu cầu hệ thống
+
+- Node.js 18+
+- npm hoặc yarn
+
+### Các bước cài đặt
 
 ```bash
+# 1. Di chuyển vào thư mục frontend
+cd frontend
+
+# 2. Cài đặt các dependencies
+npm install
+
+# 3. Chạy development server
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### Truy cập ứng dụng
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+Sau khi chạy thành công, truy cập: **http://localhost:5173**
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+---
 
-## Learn More
+## 📂 Cấu trúc dự án
 
-To learn more about Next.js, take a look at the following resources:
+```
+frontend/
+├── src/
+│   ├── components/     # Các component React
+│   ├── pages/          # Các trang của ứng dụng
+│   ├── context/        # React Context (Zustand stores)
+│   ├── services/       # Fake API services
+│   ├── hooks/          # Custom React hooks
+│   ├── types/          # TypeScript types
+│   └── utils/          # Hàm tiện ích
+├── public/             # File tĩnh
+└── package.json       # Dependencies
+```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+---
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## 📝 License
 
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+MIT

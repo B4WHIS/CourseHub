@@ -1,0 +1,84 @@
+{
+  "users": [
+    {
+      "id": "1",
+      "name": "Admin User",
+      "email": "admin@coursehub.vn",
+      "role": "ADMIN",
+      "status": "active",
+      "createdAt": "2024-01-15T10:00:00Z"
+    },
+    {
+      "id": "2",
+      "name": "Nguyễn Văn An",
+      "email": "an.nguyen@email.com",
+      "role": "STUDENT",
+      "status": "active",
+      "createdAt": "2024-02-20T14:30:00Z"
+    },
+    {
+      "id": "3",
+      "name": "Trần Thị Bình",
+      "email": "binh.tran@email.com",
+      "role": "INSTRUCTOR",
+      "status": "active",
+      "createdAt": "2024-03-10T09:15:00Z"
+    },
+    {
+      "id": "4",
+      "name": "Lê Minh Cường",
+      "email": "cuong.le@email.com",
+      "role": "STUDENT",
+      "status": "banned",
+      "createdAt": "2024-04-05T16:45:00Z"
+    },
+    {
+      "id": "5",
+      "name": "Phạm Thu Hà",
+      "email": "ha.pham@email.com",
+      "role": "INSTRUCTOR",
+      "status": "active",
+      "createdAt": "2024-05-12T11:20:00Z"
+    },
+    {
+      "id": "6",
+      "name": "Hoàng Đức Minh",
+      "email": "minh.hoang@email.com",
+      "role": "STUDENT",
+      "status": "active",
+      "createdAt": "2024-06-18T08:00:00Z"
+    }
+  ],
+  "recentActivities": [
+    {
+      "id": "1",
+      "type": "enrollment",
+      "message": "Nguyễn Văn An đã đăng ký khóa học React Cơ Bản",
+      "time": "5 phút trước"
+    },
+    {
+      "id": "2",
+      "type": "course",
+      "message": "Khóa học mới 'Docker & Kubernetes' đã được thêm",
+      "time": "1 giờ trước"
+    },
+    {
+      "id": "3",
+      "type": "user",
+      "message": "Phạm Thu Hà trở thành Giảng viên",
+      "time": "3 giờ trước"
+    },
+    {
+      "id": "4",
+      "type": "enrollment",
+      "message": "Hoàng Đức Minh đã đăng ký khóa học Next.js Toàn Diện",
+      "time": "5 giờ trước"
+    },
+    {
+      "id": "5",
+      "type": "revenue",
+      "message": "Doanh thu tháng này: 150.000.000đ",
+      "time": "1 ngày trước"
+    }
+  ]
+}

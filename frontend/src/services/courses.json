@@ -1,0 +1,122 @@
+{
+  "courses": [
+    {
+      "id": "1",
+      "title": "React Cơ Bản",
+      "slug": "react-co-ban",
+      "description": "Nắm vững kiến thức cơ bản về React bao gồm components, state và props.",
+      "price": 499000,
+      "level": "beginner",
+      "category": "Lập trình Web",
+      "thumbnail": "https://images.unsplash.com/photo-1633356122544-f134324a6cee?w=800",
+      "published": true,
+      "enrollmentCount": 1250,
+      "duration": "12 giờ",
+      "instructor": "Nguyễn Minh Tuấn"
+    },
+    {
+      "id": "2",
+      "title": "TypeScript Nâng Cao",
+      "slug": "typescript-nang-cao",
+      "description": "Tìm hiểu sâu về TypeScript với generics, decorators và các pattern nâng cao.",
+      "price": 799000,
+      "level": "advanced",
+      "category": "Lập trình Web",
+      "thumbnail": "https://images.unsplash.com/photo-1516116216624-53e697fedbea?w=800",
+      "published": true,
+      "enrollmentCount": 890,
+      "duration": "18 giờ",
+      "instructor": "Trần Thị Lan"
+    },
+    {
+      "id": "3",
+      "title": "Node.js Backend",
+      "slug": "nodejs-backend",
+      "description": "Xây dựng dịch vụ backend có khả năng mở rộng với Node.js và Express.",
+      "price": 699000,
+      "level": "intermediate",
+      "category": "Backend",
+      "thumbnail": "https://images.unsplash.com/photo-1627398242454-45a1465c2479?w=800",
+      "published": true,
+      "enrollmentCount": 720,
+      "duration": "15 giờ",
+      "instructor": "Lê Hoàng Nam"
+    },
+    {
+      "id": "4",
+      "title": "Python Cho Khoa Học Dữ Liệu",
+      "slug": "python-khoa-hoc-du-lieu",
+      "description": "Học lập trình Python cho phân tích dữ liệu và học máy.",
+      "price": 899000,
+      "level": "intermediate",
+      "category": "Khoa học dữ liệu",
+      "thumbnail": "https://images.unsplash.com/photo-1526379095098-d400fd0bf935?w=800",
+      "published": false,
+      "enrollmentCount": 0,
+      "duration": "22 giờ",
+      "instructor": "Phạm Thị Hương"
+    },
+    {
+      "id": "5",
+      "title": "Docker & Kubernetes",
+      "slug": "docker-kubernetes",
+      "description": "Điều phối container từ phát triển đến sản xuất.",
+      "price": 999000,
+      "level": "advanced",
+      "category": "DevOps",
+      "thumbnail": "https://images.unsplash.com/photo-1667372393119-3d4c48d07fc9?w=800",
+      "published": true,
+      "enrollmentCount": 560,
+      "duration": "16 giờ",
+      "instructor": "Đặng Minh Đức"
+    },
+    {
+      "id": "6",
+      "title": "Next.js Toàn Diện",
+      "slug": "nextjs-toan-dien",
+      "description": "Phát triển web full-stack với Next.js 14 và App Router.",
+      "price": 799000,
+      "level": "intermediate",
+      "category": "Lập trình Web",
+      "thumbnail": "https://images.unsplash.com/photo-1618477388954-7852f32655ec?w=800",
+      "published": true,
+      "enrollmentCount": 980,
+      "duration": "20 giờ",
+      "instructor": "Nguyễn Minh Tuấn"
+    },
+    {
+      "id": "7",
+      "title": "Thiết Kế API GraphQL",
+      "slug": "graphql-api",
+      "description": "Thiết kế và triển khai API GraphQL cho ứng dụng hiện đại.",
+      "price": 599000,
+      "level": "intermediate",
+      "category": "Backend",
+      "thumbnail": "https://images.unsplash.com/photo-1555066931-4365d14bab8c?w=800",
+      "published": true,
+      "enrollmentCount": 420,
+      "duration": "10 giờ",
+      "instructor": "Lê Hoàng Nam"
+    },
+    {
+      "id": "8",
+      "title": "Thiết Kế UI/UX Cơ Bản",
+      "slug": "ui-ux-co-ban",
+      "description": "Học nguyên tắc thiết kế, Figma và tạo giao diện đẹp mắt.",
+      "price": 549000,
+      "level": "beginner",
+      "category": "Thiết kế",
+      "thumbnail": "https://images.unsplash.com/photo-1561070791-2526d30994b5?w=800",
+      "published": false,
+      "enrollmentCount": 0,
+      "duration": "14 giờ",
+      "instructor": "Võ Thị Mai"
+    }
+  ],
+  "stats": {
+    "totalUsers": 5000,
+    "totalCourses": 8,
+    "totalEnrollments": 7370,
+    "totalRevenue": 4895000000
+  }
+}
