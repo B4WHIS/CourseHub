@@ -21,7 +21,7 @@ export default function VideoPlayer({
   const [currentTime, setCurrentTime] = useState(0);
   const [duration, setDuration] = useState(0);
   const [showControls, setShowControls] = useState(true);
-  const controlsTimeoutRef = useRef<NodeJS.Timeout | undefined>(undefined);
+  const controlsTimeoutRef = useRef<ReturnType<typeof setTimeout> | undefined>(undefined);
 
   // Format thời gian
   const formatTime = (time: number): string => {
