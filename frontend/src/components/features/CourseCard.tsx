@@ -1,6 +1,7 @@
 // Component CourseCard - Card hiển thị khóa học
 import { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import Link from 'next/link';
+import Image from 'next/image';
 import { Heart } from 'lucide-react';
 import { getLevelLabel, getLevelColor, formatPrice } from '@/utils';
 import { showToast } from '@/context/useUIStore';
@@ -58,13 +59,20 @@ export default function CourseCard({ course }: CourseCardProps) {
 
   return (
     <Link
-      to={`/courses/${course.id}`}
+      href={`/courses/${course.id}`}
       className="block bg-white rounded-xl shadow-sm border border-gray-200 
                  overflow-hidden hover:shadow-lg transition-shadow relative"
     >
       {/* Hình ảnh khóa học */}
       <div className="h-40 bg-gray-200 relative">
-        <img src={course.thumbnail} alt={course.title} className="w-full h-full object-cover" />
+        <Image
+          src={course.thumbnail}
+          alt={course.title}
+          fill
+          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+          className="object-cover"
+          loading="lazy"
+        />
         {/* Badge cấp độ */}
         <span
           className={`absolute top-3 left-3 px-2 py-0.5 rounded-full text-xs font-medium ${getBadgeColor(course.level)}`}

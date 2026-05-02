@@ -1,5 +1,7 @@
 // Component nội dung khóa học
 import { Course } from '@/types/course';
+import Image from 'next/image';
+import Link from 'next/link';
 
 interface CourseContentProps {
   course: Course;
@@ -79,18 +81,27 @@ function Sidebar({ otherCourses }: { otherCourses: Course[] }) {
       <h3 className="text-xl font-semibold text-gray-900 mb-4">Khóa học khác</h3>
       <div className="space-y-4">
         {otherCourses.map((c) => (
-          <a
+          <Link
             key={c.id}
             href={`/courses/${c.id}`}
             className="block bg-white rounded-lg border border-gray-200 overflow-hidden hover:shadow-md transition-shadow"
           >
-            <img src={c.thumbnail} alt={c.title} className="w-full h-32 object-cover" />
+            <div className="relative w-full h-32">
+              <Image
+                src={c.thumbnail}
+                alt={c.title}
+                fill
+                sizes="(max-width: 768px) 100vw, 33vw"
+                className="object-cover"
+                loading="lazy"
+              />
+            </div>
             <div className="p-4">
               <h4 className="font-medium text-gray-900 line-clamp-2">{c.title}</h4>
               <p className="text-sm text-gray-500 mt-1">{c.instructor}</p>
               <p className="text-lg font-bold text-blue-600 mt-2">{formatPrice(c.price)}</p>
             </div>
-          </a>
+          </Link>
         ))}
       </div>
     </div>

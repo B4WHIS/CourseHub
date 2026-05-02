@@ -1,4 +1,5 @@
-// Component hero thông tin khóa học
+import Link from 'next/link';
+import Image from 'next/image';
 import { Course } from '@/types/course';
 
 interface CourseHeroProps {
@@ -45,11 +46,16 @@ export default function CourseHero({ course, inCart, onAddToCart }: CourseHeroPr
           </div>
 
           <div className="bg-white rounded-xl shadow-xl p-6 text-gray-900">
-            <img
-              src={course.thumbnail}
-              alt={course.title}
-              className="w-full h-48 object-cover rounded-lg mb-6"
-            />
+            <div className="relative w-full h-48 mb-6">
+              <Image
+                src={course.thumbnail}
+                alt={course.title}
+                fill
+                sizes="(max-width: 768px) 100vw, 50vw"
+                className="object-cover rounded-lg"
+                priority
+              />
+            </div>
             <div className="mb-6">
               <p className="text-sm text-gray-500">Giá khóa học</p>
               <p className="text-3xl font-bold text-blue-600">
@@ -63,12 +69,12 @@ export default function CourseHero({ course, inCart, onAddToCart }: CourseHeroPr
             >
               {inCart ? '✓ Đã có trong giỏ hàng' : 'Thêm vào giỏ hàng'}
             </button>
-            <a
+            <Link
               href="/cart"
               className="block w-full py-3 text-center border-2 border-gray-300 rounded-lg font-semibold hover:bg-gray-50 transition-colors"
             >
               Xem giỏ hàng
-            </a>
+            </Link>
             <GuaranteeBadge />
           </div>
         </div>

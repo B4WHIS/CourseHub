@@ -1,0 +1,70 @@
+import { renderHook } from '@testing-library/react';
+import { act } from 'react';
+import { describe, it, expect, vi } from 'vitest';
+import { useDebounce } from '@/hooks/useDebounce';
+
+describe('useDebounce', () => {
+  vi.useFakeTimers();
+
+  it('returns the initial value immediately', () => {
+    const { result } = renderHook(() => useDebounce('hello', 500));
+    expect(result.current).toBe('hello');
+  });
+
+  it('debounces the value after the delay', () => {
+    const { result, rerender } = renderHook(
+      ({ value, delay }) => useDebounce(value, delay),
+      { initialProps: { value: 'first', delay: 500 } }
+    );
+
+    expect(result.current).toBe('first');
+
+    rerender({ value: 'second', delay: 500 });
+
+    // Value should not change yet
+    expect(result.current).toBe('first');
+
+    // Advance timer past the delay
+    act(() => {
+      vi.advanceTimersByTime(500);
+    });
+
+    expect(result.current).toBe('second');
+  });
+
+  it('uses default delay of 500ms', () => {
+    const { result, rerender } = renderHook(
+      ({ value }) => useDebounce(value),
+      { initialProps: { value: 'a' } }
+    );
+
+    rerender({ value: 'b' });
+    expect(result.current).toBe('a');
+
+    act(() => {
+      vi.advanceTimersByTime(499);
+    });
+    expect(result.current).toBe('a');
+
+    act(() => {
+      vi.advanceTimersByTime(1);
+    });
+    expect(result.current).toBe('b');
+  });
+
+  it('works with number values', () => {
+    const { result, rerender } = renderHook(
+      ({ value }) => useDebounce(value, 200),
+      { initialProps: { value: 1 } }
+    );
+
+    rerender({ value: 2 });
+    expect(result.current).toBe(1);
+
+    act(() => {
+      vi.advanceTimersByTime(200);
+    });
+
+    expect(result.current).toBe(2);
+  });
+});

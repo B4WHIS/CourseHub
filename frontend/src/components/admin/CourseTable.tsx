@@ -1,3 +1,5 @@
+import Image from 'next/image';
+
 // Kiểu dữ liệu khóa học
 export interface Course {
   id: string;
@@ -62,11 +64,16 @@ export default function CourseTable({
             <tr key={course.id} className="border-t border-gray-100 hover:bg-gray-50">
               <td className="py-4 px-6">
                 <div className="flex items-center gap-3">
-                  <img
-                    src={course.thumbnail}
-                    alt={course.title}
-                    className="w-12 h-12 rounded-lg object-cover"
-                  />
+                  <div className="relative w-12 h-12 flex-shrink-0">
+                    <Image
+                      src={course.thumbnail}
+                      alt={course.title}
+                      fill
+                      sizes="48px"
+                      className="object-cover rounded-lg"
+                      loading="lazy"
+                    />
+                  </div>
                   <div>
                     <p className="font-medium text-gray-900">{course.title}</p>
                     <p className="text-sm text-gray-500">{course.instructor}</p>

@@ -1,7 +1,8 @@
 // Component HeroSection - Banner chào mừng trang chủ
 'use client';
 
-import { Link } from 'react-router-dom';
+import Link from 'next/link';
+import Image from 'next/image';
 
 interface FakeUser {
   name: string;
@@ -48,13 +49,16 @@ function UserHero({ user, stats }: { user: FakeUser; stats: Stats }) {
           <div className="relative flex justify-center lg:justify-start order-2 lg:order-1">
             <div className="relative">
               <div
-                className="w-64 h-64 lg:w-80 lg:h-80 
-                              rounded-full overflow-hidden border-4 border-white/20 shadow-2xl"
+                className="w-64 h-64 lg:w-80 lg:h-80
+                                rounded-full overflow-hidden border-4 border-white/20 shadow-2xl relative"
               >
-                <img
+                <Image
                   src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&h=400&fit=crop&crop=face"
                   alt="Học tập chuyên nghiệp"
-                  className="w-full h-full object-cover"
+                  fill
+                  sizes="(max-width: 1024px) 256px, 320px"
+                  className="object-cover"
+                  priority
                 />
               </div>
               {/* Icon sách xanh */}
@@ -128,24 +132,24 @@ function GuestHero() {
           </p>
 
           {/* Nút hành động */}
-          <div className="mt-8 flex flex-col sm:flex-row gap-4">
-            <Link
-              to="/search"
-              className="px-6 py-3 bg-white text-blue-600 rounded-xl font-semibold 
-                         hover:bg-blue-50 transition-colors flex items-center justify-center gap-2 shadow-lg"
-            >
-              <SearchIcon />
-              Khám phá ngay
-            </Link>
-            <Link
-              to="/login"
-              className="px-6 py-3 border-2 border-white text-white rounded-xl font-semibold 
-                         hover:bg-white/10 transition-colors flex items-center justify-center gap-2"
-            >
-              <UserPlusIcon />
-              Bắt đầu miễn phí
-            </Link>
-          </div>
+            <div className="mt-8 flex flex-col sm:flex-row gap-4">
+              <Link
+                href="/search"
+                className="px-6 py-3 bg-white text-blue-600 rounded-xl font-semibold 
+                           hover:bg-blue-50 transition-colors flex items-center justify-center gap-2 shadow-lg"
+              >
+                <SearchIcon />
+                Khám phá ngay
+              </Link>
+              <Link
+                href="/login"
+                className="px-6 py-3 border-2 border-white text-white rounded-xl font-semibold 
+                           hover:bg-white/10 transition-colors flex items-center justify-center gap-2"
+              >
+                <UserPlusIcon />
+                Bắt đầu miễn phí
+              </Link>
+            </div>
         </div>
       </div>
     </section>

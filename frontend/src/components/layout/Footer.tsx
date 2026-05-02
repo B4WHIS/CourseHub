@@ -1,5 +1,5 @@
 // Component Footer - Chân trang
-import { Link } from 'react-router-dom';
+import Link from 'next/link';
 
 export default function Footer() {
   const currentYear = new Date().getFullYear();
@@ -20,17 +20,17 @@ export default function Footer() {
             <h4 className="text-white font-semibold mb-4">Khóa học</h4>
             <ul className="space-y-2 text-sm">
               <li>
-                <Link to="/search?category=Lập trình Web" className="hover:text-white">
+                <Link href="/search?category=Lập trình Web" className="hover:text-white">
                   Lập trình Web
                 </Link>
               </li>
               <li>
-                <Link to="/search?category=Khoa học dữ liệu" className="hover:text-white">
+                <Link href="/search?category=Khoa học dữ liệu" className="hover:text-white">
                   Khoa học dữ liệu
                 </Link>
               </li>
               <li>
-                <Link to="/search?category=DevOps" className="hover:text-white">
+                <Link href="/search?category=DevOps" className="hover:text-white">
                   DevOps
                 </Link>
               </li>

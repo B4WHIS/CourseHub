@@ -1,19 +1,22 @@
 // File AdminLayout.tsx - Layout bảo vệ cho trang quản trị
+'use client';
+
 import { useState, useEffect } from 'react';
-import { Outlet, useNavigate, useLocation } from 'react-router-dom';
+import { useRouter, usePathname } from 'next/navigation';
+import Link from 'next/link';
 import { showToast } from '@/context/useUIStore';
 
 const AUTH_STORAGE_KEY = 'fakeSession';
 
-export default function AdminLayout() {
-  const navigate = useNavigate();
+export default function AdminLayout({ children }: { children: React.ReactNode }) {
+  const router = useRouter();
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     const storedSession = localStorage.getItem(AUTH_STORAGE_KEY);
 
     if (!storedSession) {
-      navigate('/login');
+      router.push('/login');
       return;
     }
 
@@ -22,23 +25,24 @@ export default function AdminLayout() {
 
       if (session.expiry && Date.now() > session.expiry) {
         localStorage.removeItem(AUTH_STORAGE_KEY);
-        navigate('/login');
+        router.push('/login');
         return;
       }
 
       const user = session.user;
-      if (!user || user.role !== 'admin') {
+      const userRole = user?.role?.toLowerCase();
+      if (!user || userRole !== 'admin') {
         showToast('Bạn không có quyền truy cập khu vực này!', 'error');
-        navigate('/');
+        router.push('/');
         return;
       }
 
       setIsLoading(false);
     } catch {
       localStorage.removeItem(AUTH_STORAGE_KEY);
-      navigate('/login');
+      router.push('/login');
     }
-  }, [navigate]);
+  }, [router]);
 
   if (isLoading) {
     return (
@@ -58,7 +62,7 @@ export default function AdminLayout() {
 
       {/* Main content area */}
       <main className="flex-1 ml-64">
-        <Outlet />
+        {children}
       </main>
     </div>
   );
@@ -66,8 +70,8 @@ export default function AdminLayout() {
 
 // Component Sidebar cho trang admin
 function AdminSidebar() {
-  const location = useLocation();
-  const navigate = useNavigate();
+  const pathname = usePathname();
+  const router = useRouter();
 
   const navItems = [
     {
@@ -86,7 +90,7 @@ function AdminSidebar() {
     },
     {
       path: '/admin/courses',
-      label: 'Khóa học',
+      label: 'Duyệt khóa học',
       icon: (
         <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path
@@ -121,7 +125,7 @@ function AdminSidebar() {
             strokeLinecap="round"
             strokeLinejoin="round"
             strokeWidth={2}
-            d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"
+            d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c-.94 1.543.826 3.31 2.37 2.37a1.724 1.724 0 002.572 1.065c.426 1.756 2.924 1.756 3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c.94-1.543-.826-3.31-2.37-2.37.996.608 2.296.07 2.572-1.065z"
           />
           <path
             strokeLinecap="round"
@@ -136,22 +140,22 @@ function AdminSidebar() {
 
   function isActive(path: string) {
     if (path === '/admin') {
-      return location.pathname === '/admin';
+      return pathname === '/admin';
     }
-    return location.pathname.startsWith(path);
+    return pathname.startsWith(path);
   }
 
   function handleLogout() {
     localStorage.removeItem(AUTH_STORAGE_KEY);
     showToast('Đăng xuất thành công!', 'success');
-    navigate('/');
+    router.push('/');
   }
 
   return (
     <aside className="w-64 bg-gray-900 text-white flex-shrink-0 fixed h-screen">
       {/* Logo/Title */}
       <div className="p-6 border-b border-gray-800">
-        <a href="/" className="flex items-center gap-2">
+        <Link href="/" className="flex items-center gap-2">
           <div className="w-8 h-8 bg-gradient-to-br from-blue-500 to-purple-600 rounded-lg flex items-center justify-center">
             <svg
               className="w-5 h-5 text-white"
@@ -171,7 +175,7 @@ function AdminSidebar() {
             <span className="text-lg font-bold">CourseHub</span>
             <p className="text-xs text-gray-400">Quản trị viên</p>
           </div>
-        </a>
+        </Link>
       </div>
 
       {/* Navigation menu */}
@@ -179,7 +183,7 @@ function AdminSidebar() {
         {navItems.map((item) => (
           <button
             key={item.path}
-            onClick={() => navigate(item.path)}
+            onClick={() => router.push(item.path)}
             className={`flex items-center gap-3 px-6 py-3 text-sm font-medium transition-colors w-full ${
               isActive(item.path)
                 ? 'bg-blue-600 text-white'
@@ -208,7 +212,7 @@ function AdminSidebar() {
           </svg>
           Đăng xuất
         </button>
-        <a
+        <Link
           href="/"
           className="flex items-center gap-2 px-4 py-2 text-sm text-gray-400 hover:text-white transition-colors"
         >
@@ -221,7 +225,7 @@ function AdminSidebar() {
             />
           </svg>
           Quay về website
-        </a>
+        </Link>
       </div>
     </aside>
   );

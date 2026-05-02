@@ -2,7 +2,8 @@
 'use client';
 
 import { useState, useEffect, useRef } from 'react';
-import { Link, useNavigate, useLocation } from 'react-router-dom';
+import Link from 'next/link';
+import { useRouter, usePathname } from 'next/navigation';
 import { useCart } from '@/context/CartContext';
 import { showToast } from '@/context/useUIStore';
 import { User, Settings, LogOut, BookOpen, LayoutDashboard, GraduationCap, Menu, X, Search, ShoppingCart, Home, BookMarked, CreditCard } from 'lucide-react';
@@ -17,9 +18,9 @@ interface FakeUser {
 }
 
 export default function Navbar() {
-  const navigate = useNavigate();
-  const location = useLocation();
-  const { itemCount } = useCart();
+  const router = useRouter();
+  const pathname = usePathname();
+  const { itemCount, setCurrentUser } = useCart();
 
   const [user, setUser] = useState<FakeUser | null>(null);
   const [searchQuery, setSearchQuery] = useState('');
@@ -38,9 +39,10 @@ export default function Navbar() {
           localStorage.removeItem(AUTH_STORAGE_KEY);
           setUser(null);
           showToast('Phiên đăng nhập đã hết hạn. Vui lòng đăng nhập lại.', 'error');
-          navigate('/login');
+          router.push('/login');
         } else if (session.user) {
           setUser(session.user);
+          setCurrentUser(session.user.email); // Load cart của user
         }
       } catch {
         localStorage.removeItem(AUTH_STORAGE_KEY);
@@ -49,7 +51,7 @@ export default function Navbar() {
     } else {
       setUser(null);
     }
-  }, [location.pathname, navigate]);
+  }, [pathname, router]);
 
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
@@ -65,19 +67,21 @@ export default function Navbar() {
     localStorage.removeItem(AUTH_STORAGE_KEY);
     setUser(null);
     setIsDropdownOpen(false);
+    setCurrentUser(null); // Chuyển sang cart của guest
     showToast('Đăng xuất thành công!', 'success');
-    navigate('/');
+    router.push('/');
   }
 
   function handleSearch(e: React.FormEvent) {
     e.preventDefault();
     if (searchQuery.trim()) {
-      navigate(`/search?q=${encodeURIComponent(searchQuery.trim())}`);
+      router.push(`/search?q=${encodeURIComponent(searchQuery.trim())}`);
     }
   }
 
   function getRoleBadgeColor(role: string) {
-    switch (role) {
+    const r = role?.toLowerCase();
+    switch (r) {
       case 'admin':
         return 'bg-purple-100 text-purple-700';
       case 'instructor':
@@ -90,7 +94,8 @@ export default function Navbar() {
   }
 
   function getRoleLabel(role: string) {
-    switch (role) {
+    const r = role?.toLowerCase();
+    switch (r) {
       case 'admin':
         return 'Quản trị viên';
       case 'instructor':
@@ -107,7 +112,7 @@ export default function Navbar() {
       <div className="max-w-7xl mx-auto px-4">
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
-          <Link to="/" className="text-2xl font-black text-gray-900">
+          <Link href="/" className="text-2xl font-black text-gray-900">
             Course<span className="text-blue-600">Hub</span>
           </Link>
 
@@ -131,7 +136,7 @@ export default function Navbar() {
           <div className="hidden md:flex items-center gap-4">
             {/* Wishlist icon */}
             <Link
-              to="/wishlist"
+              href="/wishlist"
               className="p-2 text-gray-700 hover:text-red-500 
                       hover:bg-red-50 rounded-lg transition-colors"
             >
@@ -140,7 +145,7 @@ export default function Navbar() {
 
             {/* Cart icon */}
             <Link
-              to="/cart"
+              href="/cart"
               className="relative p-2 text-gray-700 hover:text-blue-600 
                                           hover:bg-blue-50 rounded-lg transition-colors"
             >
@@ -169,14 +174,14 @@ export default function Navbar() {
             ) : (
               <div className="flex items-center gap-2">
                 <Link
-                  to="/login"
+                  href="/login"
                   className="px-4 py-2 text-sm font-medium text-gray-700 
                                                hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-colors"
                 >
                   Đăng nhập
                 </Link>
                 <Link
-                  to="/login"
+                  href="/register"
                   className="px-4 py-2 text-sm font-medium bg-blue-600 text-white 
                                                rounded-lg hover:bg-blue-700 transition-colors"
                 >
@@ -220,33 +225,33 @@ export default function Navbar() {
 
             {/* Mobile Nav Links */}
             <div className="space-y-1">
-              <MobileNavLink to="/" icon={<Home className="w-5 h-5" />} onClick={() => setIsMobileMenuOpen(false)}>
+              <MobileNavLink href="/" icon={<Home className="w-5 h-5" />} onClick={() => setIsMobileMenuOpen(false)}>
                 Trang chủ
               </MobileNavLink>
-              <MobileNavLink to="/search" icon={<Search className="w-5 h-5" />} onClick={() => setIsMobileMenuOpen(false)}>
+              <MobileNavLink href="/search" icon={<Search className="w-5 h-5" />} onClick={() => setIsMobileMenuOpen(false)}>
                 Tất cả khóa học
               </MobileNavLink>
-              <MobileNavLink to="/wishlist" icon={<HeartIcon />} onClick={() => setIsMobileMenuOpen(false)}>
+              <MobileNavLink href="/wishlist" icon={<HeartIcon />} onClick={() => setIsMobileMenuOpen(false)}>
                 Yêu thích
               </MobileNavLink>
-              <MobileNavLink to="/cart" icon={<ShoppingCart className="w-5 h-5" />} onClick={() => setIsMobileMenuOpen(false)}>
+              <MobileNavLink href="/cart" icon={<ShoppingCart className="w-5 h-5" />} onClick={() => setIsMobileMenuOpen(false)}>
                 Giỏ hàng ({itemCount})
               </MobileNavLink>
-              <MobileNavLink to="/my-courses" icon={<BookMarked className="w-5 h-5" />} onClick={() => setIsMobileMenuOpen(false)}>
+              <MobileNavLink href="/my-courses" icon={<BookMarked className="w-5 h-5" />} onClick={() => setIsMobileMenuOpen(false)}>
                 Khóa học của tôi
               </MobileNavLink>
 
               {/* Auth Links for Mobile */}
               {user ? (
                 <>
-                  <MobileNavLink to="/profile" icon={<User className="w-5 h-5" />} onClick={() => setIsMobileMenuOpen(false)}>
+                  <MobileNavLink href="/profile" icon={<User className="w-5 h-5" />} onClick={() => setIsMobileMenuOpen(false)}>
                     Hồ sơ ({user.name})
                   </MobileNavLink>
-                  <MobileNavLink to="/settings" icon={<Settings className="w-5 h-5" />} onClick={() => setIsMobileMenuOpen(false)}>
+                  <MobileNavLink href="/settings" icon={<Settings className="w-5 h-5" />} onClick={() => setIsMobileMenuOpen(false)}>
                     Cài đặt
                   </MobileNavLink>
                   {user.role === 'admin' && (
-                    <MobileNavLink to="/admin" icon={<LayoutDashboard className="w-5 h-5" />} onClick={() => setIsMobileMenuOpen(false)}>
+                    <MobileNavLink href="/admin" icon={<LayoutDashboard className="w-5 h-5" />} onClick={() => setIsMobileMenuOpen(false)}>
                       Trang Quản trị
                     </MobileNavLink>
                   )}
@@ -262,7 +267,7 @@ export default function Navbar() {
                   </button>
                 </>
               ) : (
-                <MobileNavLink to="/login" icon={<CreditCard className="w-5 h-5" />} onClick={() => setIsMobileMenuOpen(false)}>
+                <MobileNavLink href="/login" icon={<CreditCard className="w-5 h-5" />} onClick={() => setIsMobileMenuOpen(false)}>
                   Đăng nhập / Đăng ký
                 </MobileNavLink>
               )}
@@ -328,14 +333,14 @@ function UserDropdown({
 
           <div className="py-1">
             <DropdownLink
-              to="/profile"
+              href="/profile"
               onClick={() => setIsOpen(false)}
               icon={<User className="w-4 h-4" />}
             >
               Hồ sơ cá nhân
             </DropdownLink>
             <DropdownLink
-              to="/settings"
+              href="/settings"
               onClick={() => setIsOpen(false)}
               icon={<Settings className="w-4 h-4" />}
             >
@@ -344,7 +349,7 @@ function UserDropdown({
 
             {user.role === 'student' && (
               <DropdownLink
-                to="/my-courses"
+                href="/my-courses"
                 onClick={() => setIsOpen(false)}
                 icon={<BookOpen className="w-4 h-4" />}
               >
@@ -352,23 +357,23 @@ function UserDropdown({
               </DropdownLink>
             )}
 
-            {user.role === 'admin' && (
+            {(user.role === 'admin' || user.role === 'ADMIN') && (
               <DropdownLink
-                to="/admin"
+                href="/admin"
                 onClick={() => setIsOpen(false)}
                 icon={<LayoutDashboard className="w-4 h-4" />}
               >
-                Trang Quản trị
+                Bảng điều khiển Admin
               </DropdownLink>
             )}
 
-            {user.role === 'instructor' && (
+            {(user.role === 'instructor' || user.role === 'INSTRUCTOR') && (
               <DropdownLink
-                to="/instructor"
+                href="/instructor"
                 onClick={() => setIsOpen(false)}
                 icon={<GraduationCap className="w-4 h-4" />}
               >
-                Quản lý giảng dạy
+                Khu vực Giảng viên
               </DropdownLink>
             )}
           </div>
@@ -391,19 +396,19 @@ function UserDropdown({
 
 // Component link trong dropdown
 function DropdownLink({
-  to,
+  href,
   onClick,
   icon,
   children,
 }: {
-  to: string;
+  href: string;
   onClick: () => void;
   icon: React.ReactNode;
   children: React.ReactNode;
 }) {
   return (
     <Link
-      to={to}
+      href={href}
       onClick={onClick}
       className="flex items-center gap-3 px-4 py-2.5 text-sm text-gray-700 
                      hover:bg-blue-50 hover:text-blue-600 transition-colors"
@@ -416,19 +421,19 @@ function DropdownLink({
 
 // Component link điều hướng cho mobile
 function MobileNavLink({
-  to,
+  href,
   onClick,
   icon,
   children,
 }: {
-  to: string;
+  href: string;
   onClick: () => void;
   icon: React.ReactNode;
   children: React.ReactNode;
 }) {
   return (
     <Link
-      to={to}
+      href={href}
       onClick={onClick}
       className="flex items-center gap-3 px-4 py-3 text-gray-700 hover:bg-blue-50 hover:text-blue-600 transition-colors rounded-lg"
     >

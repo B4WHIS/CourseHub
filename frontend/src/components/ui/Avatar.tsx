@@ -1,5 +1,6 @@
 // Component Avatar hiển thị hình đại diện
 import { cn } from '@/utils/cn';
+import Image from 'next/image';
 
 interface AvatarProps {
   src?: string | null;
@@ -37,12 +38,13 @@ export function Avatar({ src, alt, fallback, size = 'md', className }: AvatarPro
   if (src) {
     return (
       <div className={cn('relative rounded-full overflow-hidden', sizes[size], className)}>
-        <img
+        <Image
           src={src}
           alt={alt}
           width={imageSizes[size]}
           height={imageSizes[size]}
           className="object-cover w-full h-full"
+          loading="lazy"
         />
       </div>
     );
