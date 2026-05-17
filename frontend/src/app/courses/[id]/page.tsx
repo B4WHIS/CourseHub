@@ -1,7 +1,9 @@
 'use client';
 
 // File CourseDetail.tsx - Trang chi tiết khóa học
+import { useState, useEffect } from 'react';
 import { useParams, useRouter } from 'next/navigation';
+import Link from 'next/link';
 import CourseHero from '@/components/course/CourseHero';
 import CourseContent from '@/components/course/CourseContent';
 import Footer from '@/components/layout/Footer';
@@ -10,6 +12,7 @@ import { Course } from '@/types/course';
 import { useCart } from '@/context/CartContext';
 import { showToast } from '@/context/useUIStore';
 
+const PURCHASED_KEY = 'purchasedCourses';
 const courses: Course[] = coursesData.courses;
 
 export default function CourseDetailPage() {
@@ -17,6 +20,19 @@ export default function CourseDetailPage() {
   const router = useRouter();
   const { id } = params;
   const { addToCart, isInCart } = useCart();
+  const [isPurchased, setIsPurchased] = useState(false);
+
+  useEffect(() => {
+    const purchased = localStorage.getItem(PURCHASED_KEY);
+    if (purchased) {
+      try {
+        const ids = JSON.parse(purchased) as string[];
+        setIsPurchased(ids.includes(id as string));
+      } catch {
+        setIsPurchased(false);
+      }
+    }
+  }, [id]);
 
   const course = courses.find((c) => c.id === id);
 
@@ -45,13 +61,27 @@ export default function CourseDetailPage() {
     showToast('Đã thêm khóa học vào giỏ hàng!', 'success');
   }
 
+  function handleBuyNow() {
+    if (!course) return;
+    if (!inCart) {
+      addToCart({
+        id: course.id,
+        title: course.title,
+        price: course.price,
+        thumbnail: course.thumbnail,
+        instructor: course.instructor,
+      });
+    }
+    router.push(`/checkout?ids=${course.id}`);
+  }
+
   return (
     <div className="min-h-screen bg-gray-50">
       {/* Header */}
       <CourseHeader onBack={() => router.back()} />
 
       {/* Banner thông tin khóa học */}
-      <CourseHero course={course} inCart={inCart} onAddToCart={handleAddToCart} />
+      <CourseHero course={course} inCart={inCart} isPurchased={isPurchased} onAddToCart={handleAddToCart} onBuyNow={handleBuyNow} />
 
       {/* Nội dung khóa học */}
       <CourseContent course={course} allCourses={courses} />

@@ -51,8 +51,10 @@ export default function LoginPage() {
 
     const foundUser = allUsers.find(
       (u: { email: string; password?: string; name: string; role: string; isBanned?: boolean }) => {
-        const storedPassword = `123`;
-        return u.email === email && storedPassword === password;
+        // User từ localStorage (đã đăng ký) → so sánh với password đã lưu
+        // User từ mock JSON (demo) → không có password → dùng mặc định "123"
+        const expectedPassword = u.password || '123';
+        return u.email === email && expectedPassword === password;
       }
     );
 
@@ -65,7 +67,7 @@ export default function LoginPage() {
         return;
       }
 
-      const { ...userWithoutPassword } = foundUser;
+      const { password: _, ...userWithoutPassword } = foundUser;
       const expirationTime = new Date().getTime() + 24 * 60 * 60 * 1000;
       localStorage.setItem(
         AUTH_STORAGE_KEY,
@@ -161,22 +163,6 @@ export default function LoginPage() {
               Tạo tài khoản mới
             </Link>
 
-            <div className="mt-6 p-4 bg-gray-50 rounded-lg">
-              <p className="text-xs text-gray-500 text-center mb-2">
-                <strong>Tài khoản demo:</strong>
-              </p>
-              <div className="text-xs text-gray-600 space-y-1">
-                <p>
-                  <strong>Admin:</strong> admin@coursehub.vn / 123
-                </p>
-                <p>
-                  <strong>Giảng viên:</strong> binh.tran@email.com / 123
-                </p>
-                <p>
-                  <strong>Học viên:</strong> an.nguyen@email.com / 123
-                </p>
-              </div>
-            </div>
           </div>
         </div>
       </main>

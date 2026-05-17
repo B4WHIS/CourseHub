@@ -1,8 +1,8 @@
 'use client';
 
 // File Checkout.tsx - Trang thanh toán
-import { useState } from 'react';
-import { useRouter } from 'next/navigation';
+import { useState, useMemo } from 'react';
+import { useRouter, useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 import CheckoutForm from '@/components/checkout/CheckoutForm';
 import OrderSummary from '@/components/checkout/OrderSummary';
@@ -18,7 +18,26 @@ const PURCHASED_KEY = 'purchasedCourses';
 
 export default function CheckoutPage() {
   const router = useRouter();
-  const { items, totalPrice, clearCart } = useCart();
+  const searchParams = useSearchParams();
+  const { items, removeFromCart, clearCart } = useCart();
+
+  // Đọc danh sách ID được chọn từ URL (?ids=1,3,5)
+  const selectedIds = useMemo(() => {
+    const idsParam = searchParams.get('ids');
+    if (!idsParam) return items.map((i) => i.id); // fallback: tất cả
+    return idsParam.split(',').filter(Boolean);
+  }, [searchParams, items]);
+
+  // Chỉ lấy các item được chọn
+  const checkoutItems = useMemo(
+    () => items.filter((i) => selectedIds.includes(i.id)),
+    [items, selectedIds]
+  );
+
+  const totalPrice = useMemo(
+    () => checkoutItems.reduce((sum, i) => sum + i.price, 0),
+    [checkoutItems]
+  );
 
   // State lưu dữ liệu form
   const [formData, setFormData] = useState({
@@ -32,8 +51,8 @@ export default function CheckoutPage() {
   const [isLoading, setIsLoading] = useState(false);
   const [showSuccess, setShowSuccess] = useState(false);
 
-  // Kiểm tra nếu giỏ hàng trống
-  if (items.length === 0 && !showSuccess) {
+  // Kiểm tra nếu không có mục nào để thanh toán
+  if (checkoutItems.length === 0 && !showSuccess) {
     return <EmptyCartMessage />;
   }
 
@@ -73,15 +92,15 @@ export default function CheckoutPage() {
     await new Promise((resolve) => setTimeout(resolve, 2000));
 
     // Lưu danh sách khóa học đã mua vào localStorage
-    const purchasedIds = items.map((item) => item.id);
+    const purchasedIds = checkoutItems.map((item) => item.id);
     const existingPurchased = localStorage.getItem(PURCHASED_KEY);
     const allPurchased = existingPurchased
       ? [...new Set([...JSON.parse(existingPurchased), ...purchasedIds])]
       : purchasedIds;
     localStorage.setItem(PURCHASED_KEY, JSON.stringify(allPurchased));
 
-    // Xóa giỏ hàng sau khi thanh toán thành công
-    clearCart();
+    // Xóa những món đã thanh toán khỏi giỏ hàng
+    checkoutItems.forEach((item) => removeFromCart(item.id));
 
     setIsLoading(false);
     setShowSuccess(true);
@@ -114,7 +133,7 @@ export default function CheckoutPage() {
           </div>
 
           {/* Tóm tắt đơn hàng */}
-          <OrderSummary items={items} totalPrice={totalPrice} />
+          <OrderSummary items={checkoutItems} totalPrice={totalPrice} />
         </div>
       </main>
 

@@ -207,28 +207,6 @@ export default function AdminDashboard() {
           </ResponsiveContainer>
         </div>
 
-        {/* Bảng tóm tắt khóa học */}
-        <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
-          <h2 className="text-lg font-semibold text-gray-900 mb-4">Tóm tắt khóa học</h2>
-          <div className="space-y-3">
-            {courses.map((c) => (
-              <div
-                key={c.id}
-                className="flex items-center justify-between py-2 border-b border-gray-100 last:border-0"
-              >
-                <div className="flex-1 min-w-0">
-                  <p className="text-sm font-medium text-gray-900 truncate">{c.title}</p>
-                  <p className="text-xs text-gray-500">
-                    {c.enrollmentCount || 0} học viên × {formatPrice(c.price || 0)}
-                  </p>
-                </div>
-                <span className="text-sm font-semibold text-blue-600 ml-4">
-                  {formatPrice((c.price || 0) * (c.enrollmentCount || 0))}
-                </span>
-              </div>
-            ))}
-          </div>
-        </div>
       </div>
 
       {/* Thông báo */}

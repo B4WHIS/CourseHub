@@ -347,15 +347,13 @@ function UserDropdown({
               Cài đặt
             </DropdownLink>
 
-            {user.role === 'student' && (
-              <DropdownLink
-                href="/my-courses"
-                onClick={() => setIsOpen(false)}
-                icon={<BookOpen className="w-4 h-4" />}
-              >
-                Khóa học của tôi
-              </DropdownLink>
-            )}
+            <DropdownLink
+              href="/my-courses"
+              onClick={() => setIsOpen(false)}
+              icon={<BookOpen className="w-4 h-4" />}
+            >
+              Khóa học của tôi
+            </DropdownLink>
 
             {(user.role === 'admin' || user.role === 'ADMIN') && (
               <DropdownLink

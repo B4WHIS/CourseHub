@@ -149,7 +149,7 @@ export default function MyCoursesPage() {
             {purchasedCourses.map((course) => (
               <Link
                 key={course.id}
-                href={`/courses/${course.id}`}
+                href={`/learn/${course.id}`}
                 className="bg-white rounded-xl overflow-hidden border border-gray-200 hover:shadow-lg transition-shadow"
               >
                 <div className="relative h-40">

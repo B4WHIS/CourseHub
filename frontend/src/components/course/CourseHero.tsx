@@ -5,7 +5,9 @@ import { Course } from '@/types/course';
 interface CourseHeroProps {
   course: Course;
   inCart: boolean;
+  isPurchased?: boolean;
   onAddToCart: () => void;
+  onBuyNow?: () => void;
 }
 
 function getLevelLabel(level: string): string {
@@ -15,7 +17,7 @@ function getLevelLabel(level: string): string {
   return level;
 }
 
-export default function CourseHero({ course, inCart, onAddToCart }: CourseHeroProps) {
+export default function CourseHero({ course, inCart, isPurchased, onAddToCart, onBuyNow }: CourseHeroProps) {
   return (
     <section className="bg-gradient-to-r from-blue-600 to-purple-700 text-white py-12">
       <div className="max-w-7xl mx-auto px-4">
@@ -62,13 +64,34 @@ export default function CourseHero({ course, inCart, onAddToCart }: CourseHeroPr
                 {course.price.toLocaleString('vi-VN')}đ
               </p>
             </div>
-            <button
-              onClick={onAddToCart}
-              disabled={inCart}
-              className={`w-full py-3 rounded-lg font-semibold transition-colors mb-4 ${inCart ? 'bg-green-100 text-green-700 cursor-not-allowed' : 'bg-blue-600 text-white hover:bg-blue-700'}`}
-            >
-              {inCart ? '✓ Đã có trong giỏ hàng' : 'Thêm vào giỏ hàng'}
-            </button>
+            {isPurchased ? (
+              <Link
+                href={`/learn/${course.id}`}
+                className="block w-full py-3 rounded-lg font-semibold text-center transition-colors mb-4 bg-green-600 text-white hover:bg-green-700"
+              >
+                ▶ Tiếp tục học
+              </Link>
+            ) : (
+              <div className="flex gap-3 mb-4">
+                <button
+                  onClick={onAddToCart}
+                  disabled={inCart}
+                  className={`flex-1 py-3 rounded-lg font-semibold transition-colors ${
+                    inCart
+                      ? 'bg-green-100 text-green-700 cursor-not-allowed'
+                      : 'bg-blue-600 text-white hover:bg-blue-700'
+                  }`}
+                >
+                  {inCart ? '✓ Đã có trong giỏ' : 'Thêm vào giỏ'}
+                </button>
+                <button
+                  onClick={onBuyNow}
+                  className="flex-1 py-3 rounded-lg font-semibold bg-orange-500 text-white hover:bg-orange-600 transition-colors"
+                >
+                  Mua ngay
+                </button>
+              </div>
+            )}
             <Link
               href="/cart"
               className="block w-full py-3 text-center border-2 border-gray-300 rounded-lg font-semibold hover:bg-gray-50 transition-colors"

@@ -80,6 +80,7 @@ export default function RegisterPage() {
       id: String(storedUsers.length + 1),
       name: name,
       email: email,
+      password: password,
       role: 'student',
       registeredAt: new Date().toISOString(),
     };
@@ -88,15 +89,8 @@ export default function RegisterPage() {
     storedUsers.push(newUser);
     localStorage.setItem(USERS_LIST_KEY, JSON.stringify(storedUsers));
 
-    // Tạo session
-    const expirationTime = new Date().getTime() + 24 * 60 * 60 * 1000;
-    localStorage.setItem(
-      AUTH_STORAGE_KEY,
-      JSON.stringify({ user: newUser, expiry: expirationTime })
-    );
-
-    showToast('Đăng ký thành công! Chào mừng bạn đến với CourseHub!', 'success');
-    router.push('/');
+    showToast('Đăng ký thành công! Vui lòng đăng nhập để tiếp tục.', 'success');
+    router.push('/login');
   }
 
   return (
