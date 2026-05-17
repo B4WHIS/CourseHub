@@ -1,7 +1,7 @@
 'use client';
 
 // File Checkout.tsx - Trang thanh toán
-import { useState, useMemo } from 'react';
+import { Suspense, useState, useMemo } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 import CheckoutForm from '@/components/checkout/CheckoutForm';
@@ -17,9 +17,17 @@ import { ShoppingBag } from 'lucide-react';
 const PURCHASED_KEY = 'purchasedCourses';
 
 export default function CheckoutPage() {
+  return (
+    <Suspense fallback={<div className="min-h-screen flex items-center justify-center"><div className="animate-pulse text-gray-500">Đang tải...</div></div>}>
+      <CheckoutContent />
+    </Suspense>
+  );
+}
+
+function CheckoutContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const { items, removeFromCart, clearCart } = useCart();
+  const { items, removeFromCart } = useCart();
 
   // Đọc danh sách ID được chọn từ URL (?ids=1,3,5)
   const selectedIds = useMemo(() => {

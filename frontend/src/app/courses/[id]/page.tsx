@@ -3,7 +3,6 @@
 // File CourseDetail.tsx - Trang chi tiết khóa học
 import { useState, useEffect } from 'react';
 import { useParams, useRouter } from 'next/navigation';
-import Link from 'next/link';
 import CourseHero from '@/components/course/CourseHero';
 import CourseContent from '@/components/course/CourseContent';
 import Footer from '@/components/layout/Footer';

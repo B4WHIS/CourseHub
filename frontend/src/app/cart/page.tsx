@@ -26,7 +26,7 @@ const VALID_COUPONS: Coupon[] = [
 ];
 
 export default function CartPage() {
-  const { items, removeFromCart, totalPrice, itemCount } = useCart();
+  const { items, removeFromCart } = useCart();
   const [selectedIds, setSelectedIds] = useState<string[]>(items.map((i) => i.id));
   const [couponCode, setCouponCode] = useState('');
   const [appliedCoupon, setAppliedCoupon] = useState<Coupon | null>(null);
